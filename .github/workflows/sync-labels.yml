@@ -1,0 +1,26 @@
+name: Sync Labels from Central Config
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Runs on a schedule (daily at 2 AM UTC)
+  schedule:
+    - cron: '0 2 * * *'
+  # Also runs when changes are pushed to the default branch,
+  # specifically if the central config file path is mentioned.
+  push:
+    branches: [ main, master ]
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Labels
+        uses: micnncim/action-label-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # URL to your centralized labels file in the .github repository
+          FILE: https://raw.githubusercontent.com/ForYouPage-Org/.github/main/labels.yml
+        with:
+          # Deletes labels in this repo that are NOT in the central file.
+          # Set to 'false' to prevent deletion and only allow additions/updates.
+          prune: true
