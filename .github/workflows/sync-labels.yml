@@ -1,31 +1,28 @@
 name: Sync Labels from Central Config
+
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  # Runs on a schedule (daily at 2 AM UTC)
   schedule:
     - cron: '0 2 * * *'
-  # Also runs when changes are pushed to the default branch,
-  # specifically if the central config file path is mentioned.
   push:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   sync-labels:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the central .github repository into a specific folder
+      # This is Step 1. The '-' is critical.
       - name: Checkout central config repo
         uses: actions/checkout@v4
         with:
           repository: ForYouPage-Org/.github
-          path: .github-central # This is a temporary folder name
+          path: .github-central
 
-      # Step 2: Run the label syncer using the local file from the checkout
+      # This is Step 2. The '-' makes it a separate step.
       - name: Sync Labels
         uses: micnncim/action-label-syncer@v1
         with:
-          manifest: .github-central/labels.yml # Point to the file in the temp folder
+          manifest: .github-central/labels.yml
           prune: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
