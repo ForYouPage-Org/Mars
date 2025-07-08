@@ -14,14 +14,18 @@ jobs:
   sync-labels:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Check out the central .github repository into a specific folder
+      - name: Checkout central config repo
+        uses: actions/checkout@v4
+        with:
+          repository: ForYouPage-Org/.github
+          path: .github-central # This is a temporary folder name
+
+      # Step 2: Run the label syncer using the local file from the checkout
       - name: Sync Labels
         uses: micnncim/action-label-syncer@v1
-        env:
-          GITHUB_TOKEN:  ${{ secrets.GITHUB_TOKEN }}
-          # URL to your centralized labels file in the .github repository
-          FILE: https://raw.githubusercontent.com/ForYouPage-Org/.github/main/labels.yml
-
         with:
-          # Deletes labels in this repo that are NOT in the central file.
-          # Set to 'false' to prevent deletion and only allow additions/updates.
+          manifest: .github-central/labels.yml # Point to the file in the temp folder
           prune: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
