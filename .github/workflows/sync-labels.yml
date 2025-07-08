@@ -3,7 +3,7 @@ name: Sync Labels from Central Config
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   push:
     branches: [main, master]
 
