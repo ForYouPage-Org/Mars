@@ -17,9 +17,9 @@ jobs:
       - name: Sync Labels
         uses: micnncim/action-label-syncer@v1
         env:
-          GITHUB_TOKEN: GHSAT0AAAAAADGLQ2TMOIQT7VRK6OII4FSG2DNPRUA
+          GITHUB_TOKEN:  ${{ secrets.GITHUB_TOKEN }}
           # URL to your centralized labels file in the .github repository
-          FILE: https://raw.githubusercontent.com/ForYouPage-Org/.github/refs/heads/main/labels.yml
+          FILE: https://raw.githubusercontent.com/ForYouPage-Org/.github/main/labels.yml
 
         with:
           # Deletes labels in this repo that are NOT in the central file.
